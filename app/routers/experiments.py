@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-
-from app import crud, schemas
 from app.deps import get_db
 from app.models import ExperimentStatus
-
+import app.schemas.experiment_schema as schema
+import app.crud.experiment_controllers as crud
 router = APIRouter(prefix="/experiments", tags=["experiments"])
 
-
-@router.get("", response_model=list[schemas.ExperimentRead])
+@router.get("", response_model=list[schema.ExperimentRead])
 def list_experiments(
     status_filter: ExperimentStatus | None = Query(default=None, alias="status"),
     model_id: int | None = Query(default=None),
@@ -18,7 +16,7 @@ def list_experiments(
     return crud.get_experiments(db, status=status_value, model_id=model_id)
 
 
-@router.get("/{experiment_id}", response_model=schemas.ExperimentRead)
+@router.get("/{experiment_id}", response_model=schema.ExperimentRead)
 def get_experiment(experiment_id: int, db: Session = Depends(get_db)):
     exp = crud.get_experiment(db, experiment_id)
     if exp is None:
@@ -26,15 +24,15 @@ def get_experiment(experiment_id: int, db: Session = Depends(get_db)):
     return exp
 
 
-@router.post("", response_model=schemas.ExperimentRead, status_code=status.HTTP_201_CREATED)
-def create_experiment(payload: schemas.ExperimentCreate, db: Session = Depends(get_db)):
+@router.post("", response_model=schema.ExperimentRead, status_code=status.HTTP_201_CREATED)
+def create_experiment(payload: schema.ExperimentCreate, db: Session = Depends(get_db)):
     return crud.create_experiment(db, payload)
 
 
-@router.patch("/{experiment_id}", response_model=schemas.ExperimentRead)
+@router.patch("/{experiment_id}", response_model=schema.ExperimentRead)
 def update_experiment(
     experiment_id: int,
-    payload: schemas.ExperimentUpdate,
+    payload: schema.ExperimentUpdate,
     db: Session = Depends(get_db),
 ):
     exp = crud.get_experiment(db, experiment_id)

@@ -3,8 +3,6 @@ from fastapi.responses import JSONResponse
 
 
 class BusinessRuleError(Exception):
-    """Нарушение бизнес-правила. Маппится в 409 Conflict."""
-
     def __init__(self, detail: str):
         self.detail = detail
         super().__init__(detail)

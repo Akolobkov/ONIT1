@@ -6,8 +6,6 @@ from sqlalchemy import engine_from_config, pool, text
 from app.config import settings
 from app.database import Base
 
-# подтягиваем модели, чтобы они зарегистрировались в Base.metadata
-from app import models  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)

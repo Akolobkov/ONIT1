@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-
-from app import crud, schemas
 from app.deps import get_db
 from app.models import TaskStatus
-
+import app.schemas.task_schema as schema
+import app.crud.task_controllers as crud
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
-@router.get("", response_model=list[schemas.TaskRead])
+@router.get("", response_model=list[schema.TaskRead])
 def list_tasks(
     status_filter: TaskStatus | None = Query(default=None, alias="status"),
     db: Session = Depends(get_db),
@@ -16,7 +15,7 @@ def list_tasks(
     return crud.get_tasks(db, status=status_filter)
 
 
-@router.get("/{task_id}", response_model=schemas.TaskRead)
+@router.get("/{task_id}", response_model=schema.TaskRead)
 def get_task(task_id: int, db: Session = Depends(get_db)):
     task = crud.get_task(db, task_id)
     if task is None:
@@ -24,13 +23,13 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     return task
 
 
-@router.post("", response_model=schemas.TaskRead, status_code=status.HTTP_201_CREATED)
-def create_task(payload: schemas.TaskCreate, db: Session = Depends(get_db)):
+@router.post("", response_model=schema.TaskRead, status_code=status.HTTP_201_CREATED)
+def create_task(payload: schema.TaskCreate, db: Session = Depends(get_db)):
     return crud.create_task(db, payload)
 
 
-@router.patch("/{task_id}", response_model=schemas.TaskRead)
-def update_task(task_id: int, payload: schemas.TaskUpdate, db: Session = Depends(get_db)):
+@router.patch("/{task_id}", response_model=schema.TaskRead)
+def update_task(task_id: int, payload: schema.TaskUpdate, db: Session = Depends(get_db)):
     task = crud.get_task(db, task_id)
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
