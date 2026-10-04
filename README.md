@@ -1,9 +1,3 @@
-+102
-Lines changed: 102 additions & 0 deletions
-
-
-Original file line number	Diff line number	Diff line change
-@@ -0,0 +1,102 @@
 # ML Registry
 Лабораторная работа №1. Серверное приложение для реестра ML-задач,
 моделей и экспериментов на **FastAPI + SQLAlchemy + SQLite + Alembic**.
