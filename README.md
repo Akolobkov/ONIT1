@@ -23,6 +23,11 @@ cd ONIT1
 ## Требования: 
 - Docker
 - Docker Compose
+## ЕСЛИ НЕ ВИДИТ ЭНТРИПОИНТ (Хотя щас должен):
+```bash
+sed -i 's/\r$//' entrypoint.sh
+```
+Старт:
 ```bash
 cp .env.example .env
 docker compose up --build

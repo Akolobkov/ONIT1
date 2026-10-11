@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
-python -m alembic -c /app/alembic.ini upgrade head
+echo "Running migrations..."
+alembic upgrade head
 
-exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+echo "Starting app..."
+exec uvicorn app.main:app --host 0.0.0.0 --port 8000
