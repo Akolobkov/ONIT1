@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: b92d222630f4
+Revision ID: f8bc3872e1b6
 Revises: 
-Create Date: 2026-09-25 23:37:05.565210
+Create Date: 2026-10-10 21:26:12.512059
 """
 from typing import Sequence, Union
 
@@ -10,7 +10,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = 'b92d222630f4'
+revision: str = 'f8bc3872e1b6'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,7 +23,7 @@ def upgrade() -> None:
     sa.Column('title', sa.String(length=255), nullable=False),
     sa.Column('description', sa.String(length=1000), nullable=True),
     sa.Column('status', sa.String(length=32), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('tasks', schema=None) as batch_op:
@@ -34,7 +34,7 @@ def upgrade() -> None:
     sa.Column('name', sa.String(length=255), nullable=False),
     sa.Column('framework', sa.String(length=32), nullable=False),
     sa.Column('task_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -47,7 +47,7 @@ def upgrade() -> None:
     sa.Column('status', sa.String(length=32), nullable=False),
     sa.Column('accuracy', sa.Float(), nullable=True),
     sa.Column('model_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['model_id'], ['models.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )

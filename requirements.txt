@@ -5,4 +5,5 @@ alembic
 uvicorn
 pydantic-settings
 pytest
-httpx
+httpx2
+psycopg2-binary
